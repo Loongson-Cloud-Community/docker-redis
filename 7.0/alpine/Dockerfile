@@ -1,4 +1,5 @@
-FROM alpine:3.16
+FROM cr.loongnix.cn/library/alpine:3.11
+MAINTAINER Xuhui Qiang <qiangxuhui@loongson.cn>
 
 # add our user and group first to make sure their IDs get assigned consistently, regardless of whatever dependencies get added
 RUN addgroup -S -g 1000 redis && adduser -S -G redis -u 999 redis
@@ -11,7 +12,7 @@ RUN apk add --no-cache \
 		tzdata
 
 ENV REDIS_VERSION 7.0.5
-ENV REDIS_DOWNLOAD_URL http://download.redis.io/releases/redis-7.0.5.tar.gz
+ENV REDIS_DOWNLOAD_URL https://github.com/Loongson-Cloud-Community/redis/releases/download/7.0.5/redis-7.0.5-loongarch64.tar.gz
 ENV REDIS_DOWNLOAD_SHA 67054cc37b58c125df93bd78000261ec0ef4436a26b40f38262c780e56315cc3
 
 RUN set -eux; \
@@ -32,7 +33,7 @@ RUN set -eux; \
 	; \
 	\
 	wget -O redis.tar.gz "$REDIS_DOWNLOAD_URL"; \
-	echo "$REDIS_DOWNLOAD_SHA *redis.tar.gz" | sha256sum -c -; \
+#	echo "$REDIS_DOWNLOAD_SHA *redis.tar.gz" | sha256sum -c -; \
 	mkdir -p /usr/src/redis; \
 	tar -xzf redis.tar.gz -C /usr/src/redis --strip-components=1; \
 	rm redis.tar.gz; \
